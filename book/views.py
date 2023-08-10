@@ -1,7 +1,8 @@
+from typing import List
 from django.shortcuts import render, redirect
 from book.forms import BookStoreForm
 from book.models import BookStoreModel
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
 # Create your views here.
 def home(request):
@@ -16,8 +17,6 @@ class HomeTemplateView(TemplateView):
         context.update(kwargs)
         return context
     
-    
-
 def store_book(request):
     if request.method == 'POST':
         form = BookStoreForm(request.POST)
@@ -28,9 +27,37 @@ def store_book(request):
         form = BookStoreForm()
     return render(request, 'store_book.html', {'form': form})
 
-def display_books(request):
-    books = BookStoreModel.objects.all()
-    return render(request, 'display_book.html', {'books': books})
+# def display_books(request):
+#     books = BookStoreModel.objects.all()
+#     return render(request, 'display_book.html', {'books': books})
+
+class DisplayBookListView(ListView):
+    model = BookStoreModel
+    template_name = 'display_book.html'
+    context_object_name = 'books'
+    # ordering = ['-id']
+    
+    # def get_queryset(self):
+    #     return BookStoreModel.objects.filter(author='Widoy rele')
+    #     return BookStoreModel.objects.filter(id=678)
+    
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     # context['books'] = BookStoreModel.objects.all().order_by('-book_name')
+    #     context['books'] = BookStoreModel.objects.all().order_by('id')
+    #     return context
+    
+    def get_template_names(self):
+        if self.request.user.is_superuser:
+            template_name = 'superuser.html'
+        elif self.request.user.is_staff:
+            template_name = 'staff.html'
+        else:
+            template_name = self.template_name
+            
+        return [template_name]
+    
+    
 
 def edit_book(request, id):
     book = BookStoreModel.objects.get(pk = id)

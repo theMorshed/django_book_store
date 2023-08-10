@@ -8,7 +8,7 @@ urlpatterns = [
     path('', views.home, name='homepage'),
     path('<int:num>/', views.HomeTemplateView.as_view(), {'author': 'morshed'}, name='homepage'),
     path('store_book/', views.store_book, name='store_book'),
-    path('display-book/', views.display_books, name='display_book'),
+    path('display-book/', views.DisplayBookListView.as_view(), name='display_book'),
     path('edit_book/<int:id>', views.edit_book, name='edit_book'),
     path('delete_book/<int:id>', views.delete_book, name='delete_book'),
 ]
