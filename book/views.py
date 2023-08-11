@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from book.forms import BookStoreForm
 from book.models import BookStoreModel
 from django.views.generic import TemplateView, ListView, DetailView
-from django.views.generic.edit import FormView, CreateView
+from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 # Create your views here.
@@ -91,6 +91,17 @@ def edit_book(request, id):
             return redirect('display_book')
     return render(request, 'store_book.html', {'form': form})
 
+class BookUpdateView(UpdateView):
+    model = BookStoreModel
+    template_name = 'store_book.html'
+    form_class = BookStoreForm
+    success_url = reverse_lazy('display_book')
+
 def delete_book(request, id):
     book = BookStoreModel.objects.get(pk = id).delete()
     return redirect('display_book')
+
+class BookDeleteView(DetailView):
+    model = BookStoreModel
+    template_name = 'delete_confirm.html'
+    success_url = reverse_lazy('display_book')
