@@ -17,7 +17,7 @@
                 {% for book in books %}
                     <tr>
                         <th scope="row">{{book.id}}</th>
-                        <td>{{book.book_name}}</td>
+                        <td><a href="{% url 'book_details' book.id %}">{{book.book_name}}</a></td>
                         <td>{{book.author}}</td>
                         <td>{{book.category}}</td>
                         <td>{{book.first_pub}}</td>
