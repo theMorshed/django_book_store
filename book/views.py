@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from book.forms import BookStoreForm
 from book.models import BookStoreModel
 from django.views.generic import TemplateView, ListView, DetailView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, CreateView
 from django.urls import reverse_lazy
 
 # Create your views here.
@@ -29,15 +29,21 @@ class HomeTemplateView(TemplateView):
 #         form = BookStoreForm()
 #     return render(request, 'store_book.html', {'form': form})
 
-class BookStoreFormView(FormView):
+# class BookStoreFormView(FormView):
+#     template_name = 'store_book.html'
+#     form_class = BookStoreForm
+#     success_url = reverse_lazy('display_book')
+    
+#     def form_valid(self, form):
+#         print(form.cleaned_data)
+#         form.save()
+#         return redirect('display_book')
+
+class BookStoreFormView(CreateView):
+    model = BookStoreModel
     template_name = 'store_book.html'
     form_class = BookStoreForm
     success_url = reverse_lazy('display_book')
-    
-    def form_valid(self, form):
-        print(form.cleaned_data)
-        form.save()
-        return redirect('display_book')
 
 # def display_books(request):
 #     books = BookStoreModel.objects.all()
