@@ -101,7 +101,7 @@ def delete_book(request, id):
     book = BookStoreModel.objects.get(pk = id).delete()
     return redirect('display_book')
 
-class BookDeleteView(DetailView):
+class BookDeleteView(DeleteView):
     model = BookStoreModel
     template_name = 'delete_confirm.html'
     success_url = reverse_lazy('display_book')
